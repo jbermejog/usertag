@@ -20,6 +20,7 @@ class Show extends Component
     public $item;
 
     public $tags = [];
+
     public $selectedTags = [];
 
     public $confirmingItemDeletion = false;
@@ -53,8 +54,8 @@ class Show extends Component
 
     protected $rules = [];
 
-
-    public function mount(){
+    public function mount()
+    {
         $this->tags = Tag::all();
     }
 
@@ -134,8 +135,9 @@ class Show extends Component
             $this->item->save();
             $this->item->tags()->sync($this->selectedTags);
             $mens = "Empleado guardado correctamente";
-            $this->selectedTags = [];
 
+            $this->selectedTags = [];
+            //dd($this->item->tags);
         } else {
 
             $new = User::create([
