@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Employees;
 
 use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,6 +18,9 @@ class Show extends Component
     public $sortBy = 'id';
     public $sortAsc = true;
     public $item;
+
+    public $tags = [];
+    public $selectedTags = [];
 
     public $confirmingItemDeletion = false;
     public $confirmingItemAdd = false;
@@ -35,17 +39,24 @@ class Show extends Component
             return [
                 'item.email' => 'required|unique:users,email,' . $this->item->id,
                 'item.name' => 'required|string|min:4',
+                // 'item.tags' =>'',
             ];
         } else {
             return [
                 'item.name' => 'required|string|min:4',
                 'item.email' => 'required|unique:users,email',
+                // 'item.tags' =>'',
 
             ];
         }
     }
 
     protected $rules = [];
+
+
+    public function mount(){
+        $this->tags = Tag::all();
+    }
 
     public function render()
     {
@@ -109,16 +120,21 @@ class Show extends Component
         $this->resetErrorBag();
         $this->item = $item;
 
+        $this->selectedTags = collect($item->tags()->pluck('tag_id'));
+
         $this->confirmingItemAdd = true;
     }
 
     public function saveItem()
     {
         $this->validate();
-
+        // dd($this->selectedTags);
         if (isset($this->item->id)) {
+
             $this->item->save();
+            $this->item->tags()->sync($this->selectedTags);
             $mens = "Empleado guardado correctamente";
+
         } else {
 
             $new = User::create([
@@ -126,6 +142,7 @@ class Show extends Component
                 'email' => $this->item['email'],
                 'password' => bcrypt('123456'),
             ]);
+            $new->tags()->sync($this->selectedTags);
 
             $mens = "Trabajador agregado correctamente";
         }

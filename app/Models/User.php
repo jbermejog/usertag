@@ -59,7 +59,12 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function tags(){
-        return $this->belongsToMany(Tag::class)->withPivot();
+    /**
+     * The tags that belong to the user.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
+
 }
