@@ -185,7 +185,7 @@
 
 
             <div wire:ignore  class="col-span-6 mt-4 sm:col-span-4">
-                <label for="tags">
+                <label for="tags" class="grid grid-cols-3 gap-4">
                     Tags*
                 </label>
                 <select id="tags"

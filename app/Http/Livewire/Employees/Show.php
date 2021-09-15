@@ -39,13 +39,13 @@ class Show extends Component
             return [
                 'item.email' => 'required|unique:users,email,' . $this->item->id,
                 'item.name' => 'required|string|min:4',
-                'item.tags' =>'',
+                // 'item.tags' =>'',
             ];
         } else {
             return [
                 'item.name' => 'required|string|min:4',
                 'item.email' => 'required|unique:users,email',
-                'item.tags' =>'',
+                // 'item.tags' =>'',
 
             ];
         }
