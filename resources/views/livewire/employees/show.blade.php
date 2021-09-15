@@ -189,14 +189,10 @@
                     Tags*
                 </label>
                 <select id="tags"
+                    wire:model="selectedTags"
                         class="w-full h-full py-2 pl-2 pr-4 mt-2 text-sm border border-gray-400 rounded-lg sm:text-base focus:outline-none focus:border-blue-400 select2"
                         multiple>
                     @foreach($tags as $tag)
-                        @isset($item->id)
-                            @foreach ($item->tags as $etiqueta)
-                                <option value="{{ $etiqueta->id }}">{{ $etiqueta->tag }}</option>
-                            @endforeach
-                        @endisset
                         <option value="{{ $tag->id }}">{{ $tag->tag }}</option>
                     @endforeach
                 </select>
@@ -237,7 +233,7 @@
           })
 
           el.on('change', function (e) {
-            @this.set('item.tags', el.select2("val"))
+            @this.set('selectedTags', el.select2("val"))
           })
 
           function initSelect () {

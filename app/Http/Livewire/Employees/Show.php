@@ -20,6 +20,7 @@ class Show extends Component
     public $item;
 
     public $tags = [];
+    public $selectedTags = [];
 
     public $confirmingItemDeletion = false;
     public $confirmingItemAdd = false;
@@ -125,10 +126,11 @@ class Show extends Component
     public function saveItem()
     {
         $this->validate();
-
+        // dd($this->selectedTags);
         if (isset($this->item->id)) {
-            dd($this->item->tags);
+
             $this->item->save();
+            $this->item->tags()->sync($this->selectedTags);
             $mens = "Empleado guardado correctamente";
 
         } else {
@@ -138,6 +140,7 @@ class Show extends Component
                 'email' => $this->item['email'],
                 'password' => bcrypt('123456'),
             ]);
+            $new->tags()->sync($this->selectedTags);
 
             $mens = "Trabajador agregado correctamente";
         }
