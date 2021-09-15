@@ -134,6 +134,7 @@ class Show extends Component
             $this->item->save();
             $this->item->tags()->sync($this->selectedTags);
             $mens = "Empleado guardado correctamente";
+            $this->selectedTags = [];
 
         } else {
 
@@ -145,6 +146,7 @@ class Show extends Component
             $new->tags()->sync($this->selectedTags);
 
             $mens = "Trabajador agregado correctamente";
+             $this->selectedTags = [];
         }
 
         session()->flash('message', $mens);
