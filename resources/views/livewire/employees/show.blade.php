@@ -228,12 +228,13 @@
             initSelect()
           })
 
-          Livewire.on('setCategoriesSelect', values => {
-            el.val(values).trigger('change.select2')
-          })
+        //   Livewire.on('setCategoriesSelect', values => {
+        //     el.val(values).trigger('change.select2')
+        //   })
 
           el.on('change', function (e) {
             @this.set('selectedTags', el.select2("val"))
+            // console.log(el.select2("val"))
           })
 
           function initSelect () {
