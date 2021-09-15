@@ -120,6 +120,8 @@ class Show extends Component
         $this->resetErrorBag();
         $this->item = $item;
 
+        $this->selectedTags = collect($item->tags()->pluck('tag_id'));
+
         $this->confirmingItemAdd = true;
     }
 
