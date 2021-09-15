@@ -58,4 +58,13 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * The tags that belong to the user.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
 }
