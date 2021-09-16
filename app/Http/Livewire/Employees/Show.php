@@ -113,6 +113,7 @@ class Show extends Component
     {
         $this->reset(['item']);
         $this->confirmingItemAdd = true;
+        $this->selectedTags = [];
     }
 
     public function confirmItemEdit(User $item)
@@ -134,6 +135,7 @@ class Show extends Component
             $this->item->save();
             $this->item->tags()->sync($this->selectedTags);
             $mens = "Empleado guardado correctamente";
+            $this->selectedTags = [];
 
         } else {
 
@@ -143,6 +145,7 @@ class Show extends Component
                 'password' => bcrypt('123456'),
             ]);
             $new->tags()->sync($this->selectedTags);
+            $this->selectedTags = [];
 
             $mens = "Trabajador agregado correctamente";
         }
