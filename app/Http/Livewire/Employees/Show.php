@@ -19,8 +19,8 @@ class Show extends Component
     public $sortAsc = true;
     public $item;
 
-    public $tags = [];
-    public $selectedTags = [];
+    public $tags = []; //lista de todos los Tags de la DB
+    public $selectedTags = [];  //array con los tags que pueda tener el usuario
 
     public $confirmingItemDeletion = false;
     public $confirmingItemAdd = false;
@@ -55,7 +55,7 @@ class Show extends Component
 
 
     public function mount(){
-        $this->tags = Tag::all();
+        $this->tags = Tag::all(); //montamos el componente con la lista de Tags de la DB
     }
 
     public function render()
@@ -104,16 +104,19 @@ class Show extends Component
 
     public function deleteItem(User $item)
     {
+            $item->tags()->detach(); //añadido metodo para borrar los datos de la tabla pivote
             $item->delete();
             $this->confirmingItemDeletion = false;
             session()->flash('message', 'Trabajador eliminado correctamente');
+
+            $this->reset(['item']); //reseteamos el item para que no persista
     }
 
     public function confirmItemAdd()
     {
         $this->reset(['item']);
         $this->confirmingItemAdd = true;
-        $this->selectedTags = [];
+        $this->selectedTags = []; //limpiamos la variable para que no persista en Livewire
     }
 
     public function confirmItemEdit(User $item)
@@ -121,7 +124,7 @@ class Show extends Component
         $this->resetErrorBag();
         $this->item = $item;
 
-        $this->selectedTags = collect($item->tags()->pluck('tag_id'));
+        $this->selectedTags = collect($item->tags()->pluck('tag_id')); //asignamos la variable de Livewire a los Tags del user
 
         $this->confirmingItemAdd = true;
     }
@@ -129,13 +132,13 @@ class Show extends Component
     public function saveItem()
     {
         $this->validate();
-        // dd($this->selectedTags);
+
         if (isset($this->item->id)) {
 
             $this->item->save();
-            $this->item->tags()->sync($this->selectedTags);
+            $this->item->tags()->sync($this->selectedTags); //sincronizamos los tags con los tags del usuario de la DB
             $mens = "Empleado guardado correctamente";
-            $this->selectedTags = [];
+            $this->selectedTags = [];  //tras guardarlos limpiamos la variable para que no persista en Livewire
 
         } else {
 
@@ -144,8 +147,8 @@ class Show extends Component
                 'email' => $this->item['email'],
                 'password' => bcrypt('123456'),
             ]);
-            $new->tags()->sync($this->selectedTags);
-            $this->selectedTags = [];
+            $new->tags()->sync($this->selectedTags); //sincronizamos los tags con los tags del usuario de la DB
+            $this->selectedTags = []; //tras guardar el nuevo usuario limpiamos la variable para que no persista en Livewire
 
             $mens = "Trabajador agregado correctamente";
         }
